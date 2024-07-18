@@ -18,18 +18,22 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from recipes.views import RecipeViewSet
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 # Initialize the router
 router = routers.DefaultRouter()
 router.register(r'recipes', RecipeViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),               # Admin site
-    path('api/', include(router.urls)),            # API routes from the router
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),  # DRF login and logout views
-]
+    path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Optionally serve static and media files during development
+
+# Serve static and media files during development
 from django.conf import settings
 from django.conf.urls.static import static
 
